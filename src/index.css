@@ -1,13 +1,71 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@charset "utf-8";
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+ol,
+li,
+dl,
+dt,
+dd,
+table,
+th,
+td,
+form,
+fieldset,
+legend,
+input,
+textarea,
+img,
+button,
+select {
+  margin: 0;
+  padding: 0;
+  font-family: Source Sans Pro, Helvetica Neue, Arial, sans-serif;
 }
+ul,
+li {
+  list-style: none;
+}
+.navi::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for IE and Edge */
+.navi {
+  -ms-overflow-style: none;
+}
+.aniHead {
+  -webkit-animation-name: aniHead;
+  animation-name: aniHead;
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  visibility: visible;
+}
+/* region: animation */
+@-webkit-keyframes aniHead {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(10%);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translateY(0%);
+  }
+}
+@keyframes aniHead {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(10%);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translateY(0%);
+  }
+}
+/* endregion */
