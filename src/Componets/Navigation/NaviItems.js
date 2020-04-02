@@ -66,8 +66,10 @@ class NaviItems extends Component {
   };
 
   //항목 검색
-  handleItemClick = (key, event) => {
-    console.log(key, "event2", event);
+  handleItemClick = async (item, event) => {
+    await this.setState({ isExtend: false });
+
+    this.props.Callbacks.handleClickKind(item);
   };
 
   render() {
@@ -86,7 +88,7 @@ class NaviItems extends Component {
                 title={item}
                 clickKind={clickKind}
                 Callbacks={{
-                  handleItemClick: Callbacks.handleClickKind.bind(this, item)
+                  handleItemClick: this.handleItemClick.bind(this, item)
                 }}
               />
             );

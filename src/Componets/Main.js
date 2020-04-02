@@ -60,7 +60,7 @@ class Main extends Component {
         !isMaking &&
         window.innerHeight + window.scrollY >= document.body.offsetHeight
       ) {
-        //실행할 로직 (콘텐츠 추가)
+        //생성 중일 경우 끝날 떄까지 대기
         isMaking = true;
 
         const formObj = Object.assign({}, this.state.dummyData[0]);
