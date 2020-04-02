@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import Contents from './Contents'
-import logo from '../../logo.svg'
 
 const MainBoard = styled.div`
   display: inline-block;
@@ -28,12 +27,10 @@ const Waiting = styled.h5`
   margin-top: 50px;
 `
 const ContentContainer = ({ addChilds, dummyData, showProgress }) => {
-  console.log('>>>', dummyData, '<>', addChilds)
-
-  const mapData = dummyData.map(item => {
+  const mapData = dummyData.map((item, idx) => {
     return (
-      <CLi>
-        <Contents info={item} />
+      <CLi key={`li${idx}`}>
+        <Contents key={`Cor${idx}`} info={item} />
       </CLi>
     )
   })

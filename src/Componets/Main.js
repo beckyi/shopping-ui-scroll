@@ -24,19 +24,22 @@ class Main extends Component {
     )
       .then(response => response.json())
       .then(responJSON => {
-        console.log(responJSON);
+        try {
+          let response_dummy = [];
 
-        let response_dummy = [];
-
-        if (responJSON && responJSON.length > 0) {
-          //default 4개
-          for (let i = 0; i < 4; i++) {
-            let pObj = Object.assign({}, { page: 1 }, responJSON[0]);
-            response_dummy.push(pObj);
+          if (responJSON && responJSON.length > 0) {
+            //default 4개
+            for (let i = 0; i < 4; i++) {
+              let pObj = Object.assign({}, { page: 1 }, responJSON[0]);
+              response_dummy.push(pObj);
+            }
           }
-        }
 
-        return response_dummy;
+          return response_dummy;
+        } catch (error) {
+          console.warn(error);
+          return [];
+        }
       });
 
     await this.setState({ dummyData, showProgress: false });
@@ -44,6 +47,22 @@ class Main extends Component {
     //scroll event
     this.catchScrollEvent();
   };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (
+      this.state.isTop !== nextState.isTop &&
+      (!this.state.isTop && nextState.isTop)
+    ) {
+      console.log("!!!!", nextState);
+      //clickKind
+      let headElem = document.getElementsByClassName("aniHead");
+
+      if (headElem && headElem[0]) {
+      }
+    }
+
+    return true;
+  }
 
   catchScrollEvent() {
     let isMaking = false;
@@ -71,7 +90,7 @@ class Main extends Component {
           let upObj = Object.assign({}, formObj, { page: pageN });
 
           copyChild.push(
-            <CLi>
+            <CLi key={i + "li"}>
               <Contents info={upObj} />
             </CLi>
           );
@@ -108,14 +127,17 @@ class Main extends Component {
         .then(responJSON => {
           let response_dummy = [];
 
-          if (responJSON && responJSON.length > 0) {
-            //default 4개
-            for (let i = 0; i < 4; i++) {
-              let pObj = Object.assign({}, { page: 1 }, responJSON[0]);
-              response_dummy.push(pObj);
+          try {
+            if (responJSON && responJSON.length > 0) {
+              //default 4개
+              for (let i = 0; i < 4; i++) {
+                let pObj = Object.assign({}, { page: 1 }, responJSON[0]);
+                response_dummy.push(pObj);
+              }
             }
+          } catch (error) {
+            console.warn(error);
           }
-
           this.setState({
             dummyData: response_dummy,
             addChilds: [],

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import Item from "./Item";
 import styled from "styled-components";
 
@@ -61,7 +60,6 @@ class NaviItems extends Component {
 
   //확장 or 축소
   handleArrowClick = event => {
-    console.log("event1", event);
     this.setState(state => ({ isExtend: !state.isExtend }));
   };
 
@@ -73,7 +71,7 @@ class NaviItems extends Component {
   };
 
   render() {
-    const { kinds, clickKind, Callbacks } = this.props;
+    const { kinds, clickKind } = this.props;
     const { isExtend } = this.state;
 
     return (
@@ -111,10 +109,4 @@ class NaviItems extends Component {
   }
 }
 
-NaviItems.propTypes = {};
-
 export default NaviItems;
-
-/** {itemArr.map((item, idx) => {
-          return <Item key={`item${idx}`} title={item} />
-        })} */

@@ -44,7 +44,7 @@ class Contents extends Component {
 
   render () {
     const { info } = this.props
-    console.log(info)
+
     return (
       <div style={{ cursor: 'pointer' }}>
         <div className='conImg' style={{ width: '500px', height: '550px' }}>
