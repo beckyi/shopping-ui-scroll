@@ -2,7 +2,7 @@ import React from 'react'
 import NaviItems from './NaviItems'
 import NaviHead from './NaviHead'
 
-const kinds = [
+export const kinds = [
   'DRESS',
   'TOP',
   'OUTER',

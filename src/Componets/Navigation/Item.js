@@ -17,9 +17,9 @@ const Title = styled.h5`
   text-align: center;
 `
 
-const Item = ({ title, clickKind, Callbacks }) => {
+const Item = ({ id, title, clickKind, Callbacks }) => {
   return (
-    <HeadBox onClick={Callbacks.handleItemClick.bind(this, title)}>
+    <HeadBox id={id} onClick={Callbacks.handleItemClick.bind(this, title)}>
       <ImgItem src='https://via.placeholder.com/150.png' />
       <Title bool={title === clickKind}>
         {title}

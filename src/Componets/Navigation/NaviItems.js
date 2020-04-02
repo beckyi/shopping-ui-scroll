@@ -17,12 +17,13 @@ const ArrowBtn = styled.div`
   position: fixed;
   top: 0px;
   right: 0px;
-  width: 130px;
+  width: 105px;
   height: 204px;
   text-align: center;
   padding-right: 10px;
   background: #ffffff;
   cursor: pointer;
+  box-shadow: 5px -20px 15px 20px white;
 `;
 
 const EnTitle = styled.p`
@@ -82,7 +83,7 @@ class NaviItems extends Component {
             return (
               <Item
                 key={idx}
-                id={`item${idx}`}
+                id={item}
                 title={item}
                 clickKind={clickKind}
                 Callbacks={{

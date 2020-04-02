@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import NaviContainer from "./Navigation/NaviContainer";
+import NaviContainer, { kinds } from "./Navigation/NaviContainer";
 import ContentContainer, { CLi } from "./Content/ContentContainer";
 import Contents from "./Content/Contents";
+
+const target = "storeList"; //스토리지 key
 
 class Main extends Component {
   constructor(props) {
@@ -11,57 +13,109 @@ class Main extends Component {
       clickKind: "DRESS",
       dummyData: [],
       addChilds: [],
-      showProgress: false
+      showProgress: true
     };
   }
 
+  //UNSAFE_componentWillMount
   componentWillMount = async () => {
-    await this.setState({ showProgress: true });
+    //스토리지에서 저장 정보 조회
+    let data = window.localStorage.getItem(target);
 
-    //동기 (await)
-    let dummyData = await fetch(
-      "https://my-json-server.typicode.com/beckyi/demo/items?category=DRESS"
-    )
-      .then(response => response.json())
-      .then(responJSON => {
-        try {
-          let response_dummy = [];
+    //변환 작업
+    if (data !== null) {
+      //저장되어 있을 경우 다시 바인딩
+      if (/[.*]|{.*}/.test(data)) {
+        let stateObj = JSON.parse(data);
 
-          if (responJSON && responJSON.length > 0) {
-            //default 4개
-            for (let i = 0; i < 4; i++) {
-              let pObj = Object.assign({}, { page: 1 }, responJSON[0]);
-              response_dummy.push(pObj);
-            }
+        const _isTop = stateObj.isTop;
+        const _scrollY = stateObj.scrollY ? stateObj.scrollY : 0;
+        const _naviScrollX = stateObj.naviScrollX ? stateObj.naviScrollX : 0;
+
+        //불필요요소 삭제
+        delete stateObj.scrollY;
+        delete stateObj.naviScrollX;
+
+        await this.setState(stateObj, () => {
+          //move scroll
+          if (_isTop) {
+            let headElem = document.getElementsByClassName("navi");
+            headElem[0].scrollBy(_naviScrollX, 0);
+          } else {
+            window.scrollTo(0, _scrollY);
           }
+        });
+      }
+    } else {
+      //저장되어 있지 않을 경우 새로 불러오기
+      //동기 (await)
+      let dummyData = await fetch(
+        "https://my-json-server.typicode.com/beckyi/demo/items?category=DRESS"
+      )
+        .then(response => response.json())
+        .then(responJSON => {
+          try {
+            let response_dummy = [];
 
-          return response_dummy;
-        } catch (error) {
-          console.warn(error);
-          return [];
-        }
-      });
+            if (responJSON && responJSON.length > 0) {
+              //default 4개
+              for (let i = 0; i < 4; i++) {
+                let pObj = Object.assign({}, { page: 1 }, responJSON[0]);
+                response_dummy.push(pObj);
+              }
+            }
 
-    await this.setState({ dummyData, showProgress: false });
+            return response_dummy;
+          } catch (error) {
+            console.warn(error);
+            return [];
+          }
+        });
+
+      await this.setState({ dummyData, showProgress: false });
+    }
+
+    //화면 변경되기 전에 현재 상태 저장
+    this.saveBeforeOut();
 
     //scroll event
     this.catchScrollEvent();
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
+  //화면 변경하기 전에 데이터 스토리지에 저장
+  saveBeforeOut() {
+    window.onbeforeunload = e => {
+      let saveObj = Object.assign(
+        {
+          naviScrollX: document.getElementsByClassName("navi")[0].scrollLeft,
+          scrollY: window.scrollY
+        },
+        this.state
+      );
+      window.localStorage.setItem(target, JSON.stringify(saveObj));
+    };
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
     if (
-      this.state.isTop !== nextState.isTop &&
-      (!this.state.isTop && nextState.isTop)
+      prevState.isTop !== this.state.isTop &&
+      (!prevState.isTop && this.state.isTop)
     ) {
-      console.log("!!!!", nextState);
       //clickKind
-      let headElem = document.getElementsByClassName("aniHead");
+      let headElem = document.getElementsByClassName("navi");
 
       if (headElem && headElem[0]) {
+        let idx = kinds.indexOf(this.state.clickKind);
+        let focusWhere = idx > 4 ? 1000 : 0;
+        headElem[0].scrollBy(focusWhere, 0); //가려지지 않도록
       }
     }
+  }
 
-    return true;
+  componentWillUnmount() {
+    // window.removeEventListener("onbeforeunload", this.onMarginTopChange);
+
+    window.removeEventListener("scroll", this.catchScrollEvent);
   }
 
   catchScrollEvent() {
