@@ -15,8 +15,6 @@ const BigText = styled.strong`
   margin-bottom: 1px;
   overflow: hidden;
   height: 18px;
-  font-weight: normal;
-  font-family: Roboto-Medium, NanumBarunGothicBold, dotum, sans-serif;
 `
 
 const SmallText = styled.p`
@@ -29,6 +27,13 @@ const SmallText = styled.p`
   vertical-align: top;
 `
 
+const DummyImg = styled.img`
+  max-width: 500px;
+  min-width: 500px;
+  max-height: 550px;
+  min-height: 550px;
+`
+
 class Contents extends Component {
   constructor (props) {
     super(props)
@@ -38,16 +43,22 @@ class Contents extends Component {
   }
 
   render () {
+    const { info } = this.props
+    console.log(info)
     return (
       <div style={{ cursor: 'pointer' }}>
         <div className='conImg' style={{ width: '500px', height: '550px' }}>
-          <img src='https://via.placeholder.com/500X550.png' />
+          <DummyImg src='https://via.placeholder.com/500X550.png' />
         </div>
         <InformArea>
-          <div style={{ marginBottom: '5px' }}>
+          <div style={{ marginTop: '5px' }}>
             <CoTitle>
-              <BigText>dddd</BigText>
-              <SmallText>sdas</SmallText>
+              <BigText>
+                PAGE: {info.page} {info.brand}
+              </BigText>
+              <SmallText>
+                {info.info}
+              </SmallText>
             </CoTitle>
           </div>
         </InformArea>

@@ -14,7 +14,7 @@ const NaviHead = styled.div`
   scrollbar-width: none;
 `;
 
-const BotBtn = styled.div`
+const ArrowBtn = styled.div`
   position: fixed;
   top: 0px;
   right: 0px;
@@ -33,6 +33,12 @@ const EnTitle = styled.p`
   font-weight: 600;
   letter-spacing: 0;
   text-align: center;
+  margin-top: 10px;
+`;
+
+const EmptyBox = styled.div`
+  display: inline-block;
+  width: 130px;
 `;
 //endregion
 
@@ -49,21 +55,9 @@ class NaviItems extends Component {
     };
   }
 
-  componentWillMount() {}
-
-  componentDidMount() {}
-
-  componentWillReceiveProps(nextProps) {}
-
   shouldComponentUpdate(nextProps, nextState) {
     return true;
   }
-
-  componentWillUpdate(nextProps, nextState) {}
-
-  componentDidUpdate(prevProps, prevState) {}
-
-  componentWillUnmount() {}
 
   //확장 or 축소
   handleArrowClick = event => {
@@ -97,18 +91,19 @@ class NaviItems extends Component {
               />
             );
           })}
+          <EmptyBox />
         </div>
-        <BotBtn onClick={this.handleArrowClick}>
+        <ArrowBtn onClick={this.handleArrowClick}>
           <svg
             width="33"
-            height="100%"
+            height={isExtend ? "115px" : "100%"}
             viewBox="0 0 33 17"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path d={isExtend ? topArrow : botArrow} fill="#363232" />
           </svg>
-        </BotBtn>
+        </ArrowBtn>
       </NaviHead>
     );
   }

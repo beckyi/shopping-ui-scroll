@@ -10,6 +10,7 @@ const TopArea = styled.div`
   background: #ffffff;
   border-bottom: 0.1px solid #e6e6e6;
   padding: 7px 0px;
+  min-width: 825px;
 `
 
 const TLi = styled.li`

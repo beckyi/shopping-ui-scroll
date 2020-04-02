@@ -10,11 +10,14 @@ class Main extends Component {
       isTop: true,
       clickKind: "DRESS",
       dummyData: [],
-      addChilds: []
+      addChilds: [],
+      showProgress: false
     };
   }
 
   componentWillMount = async () => {
+    await this.setState({ showProgress: true });
+
     //동기 (await)
     let dummyData = await fetch(
       "https://my-json-server.typicode.com/beckyi/demo/items?category=DRESS"
@@ -28,14 +31,15 @@ class Main extends Component {
         if (responJSON && responJSON.length > 0) {
           //default 4개
           for (let i = 0; i < 4; i++) {
-            response_dummy.push(responJSON[0]);
+            let pObj = Object.assign({}, { page: 1 }, responJSON[0]);
+            response_dummy.push(pObj);
           }
         }
 
         return response_dummy;
       });
 
-    await this.setState({ dummyData });
+    await this.setState({ dummyData, showProgress: false });
 
     //scroll event
     this.catchScrollEvent();
@@ -43,16 +47,8 @@ class Main extends Component {
 
   catchScrollEvent() {
     let isMaking = false;
-    let count = 0;
 
     window.onscroll = e => {
-      console.log(
-        window.scrollY,
-        "scrollY",
-        window.innerHeigh,
-        document,
-        document.body.offsetHeight
-      );
       let bool = window.scrollY === 0;
 
       if (bool !== this.state.isTop) {
@@ -64,18 +60,19 @@ class Main extends Component {
         !isMaking &&
         window.innerHeight + window.scrollY >= document.body.offsetHeight
       ) {
-        count++;
-        console.log(count);
-        //window height + window scrollY 값이 document height보다 클 경우,
         //실행할 로직 (콘텐츠 추가)
         isMaking = true;
 
+        const formObj = Object.assign({}, this.state.dummyData[0]);
         let copyChild = this.state.addChilds.slice();
+        let pageN = parseInt(this.state.addChilds.length / 30) + 2;
 
         for (let i = 0; i < 30; i++) {
+          let upObj = Object.assign({}, formObj, { page: pageN });
+
           copyChild.push(
             <CLi>
-              <Contents />
+              <Contents info={upObj} />
             </CLi>
           );
         }
@@ -89,24 +86,18 @@ class Main extends Component {
           }
         );
       }
-      // click 이벤트를 감지하여 계산기 open 여부를 적용하기 위한 이벤트 연결
-      // window.addEventListener("scroll", this.onTopChange);
     };
   }
 
-  onTopChange = (event, a, b) => {
-    console.log("onTopChange", event, a, b);
-  };
-
-  componentDidMount() {}
-
   //어아탬 클릭 이벤트 처리
-  handleClickKind = model => {
+  handleClickKind = async model => {
     let changeState = {};
 
     //다를 경우에만 저장
     if (this.state.clickKind !== model) {
       changeState.clickKind = model;
+
+      await this.setState({ showProgress: true });
 
       //api 호출 (비동기) :: fake api
       fetch(
@@ -115,18 +106,21 @@ class Main extends Component {
       )
         .then(response => response.json())
         .then(responJSON => {
-          console.log(responJSON);
-
           let response_dummy = [];
 
           if (responJSON && responJSON.length > 0) {
             //default 4개
             for (let i = 0; i < 4; i++) {
-              response_dummy.push(responJSON[0]);
+              let pObj = Object.assign({}, { page: 1 }, responJSON[0]);
+              response_dummy.push(pObj);
             }
           }
 
-          this.setState({ dummyData: response_dummy, addChilds: [] });
+          this.setState({
+            dummyData: response_dummy,
+            addChilds: [],
+            showProgress: false
+          });
         });
     }
 
@@ -141,7 +135,7 @@ class Main extends Component {
   };
 
   render() {
-    const { isTop, clickKind, addChilds, dummyData } = this.state;
+    const { isTop, clickKind, addChilds, dummyData, showProgress } = this.state;
     return (
       <div id="main">
         <NaviContainer
@@ -149,7 +143,11 @@ class Main extends Component {
           clickKind={clickKind}
           Callbacks={{ handleClickKind: this.handleClickKind }}
         />
-        <ContentContainer dummyData={dummyData} addChilds={addChilds} />
+        <ContentContainer
+          dummyData={dummyData}
+          addChilds={addChilds}
+          showProgress={showProgress}
+        />
       </div>
     );
   }
