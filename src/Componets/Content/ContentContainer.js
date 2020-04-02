@@ -34,7 +34,7 @@ const ContentContainer = ({ addChilds, dummyData, showProgress }) => {
       </CLi>
     )
   })
-
+  console.log(mapData, '!!!', dummyData)
   return (
     <MainBoard>
       {showProgress
