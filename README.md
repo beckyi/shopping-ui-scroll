@@ -2,11 +2,12 @@
 ## SSG-UI-HOMEWORK
 기한: 2020.04.04 (금)
 
-React(CRA)로 개발했습니다.
+- 프로젝트 개발 환경 : React(CRA) & javascript
+- 가로 스크롤, 무한 스크롤, 비동기 처리 등 기능 구현
 
-가로 스크롤, 무한 스크롤, 비동기 처리 등 기능 구현했습니다.
-
-참조: https://ssg-ui.github.io/homework/#/
+- 참조
+Fake API & dummy json data(https://github.com/beckyi/demo)
+과제 주제 (https://ssg-ui.github.io/homework/#/)
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
