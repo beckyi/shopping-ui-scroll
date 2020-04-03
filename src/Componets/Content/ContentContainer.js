@@ -28,9 +28,15 @@ const Waiting = styled.h5`
 `
 const ContentContainer = ({ addChilds, dummyData, showProgress }) => {
   const mapData = dummyData.map((item, idx) => {
+    console.log(item, '??? >>>')
     return (
       <CLi key={`li${idx}`}>
-        <Contents key={`Cor${idx}`} info={item} />
+        <Contents
+          key={`Cor${idx}`}
+          page={item.page} /** obj error */
+          brand={item.brand}
+          info={item.info}
+        />
       </CLi>
     )
   })

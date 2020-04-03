@@ -43,8 +43,8 @@ class Contents extends Component {
   }
 
   render () {
-    const { info } = this.props
-
+    const { page, brand, info } = this.props
+    console.log('!!!!', info)
     return (
       <div style={{ cursor: 'pointer' }}>
         <div className='conImg' style={{ width: '500px', height: '550px' }}>
@@ -54,10 +54,10 @@ class Contents extends Component {
           <div style={{ marginTop: '5px' }}>
             <CoTitle>
               <BigText>
-                PAGE: {info.page} {info.brand}
+                PAGE: {page} {brand}
               </BigText>
               <SmallText>
-                {info.info}
+                {info}
               </SmallText>
             </CoTitle>
           </div>

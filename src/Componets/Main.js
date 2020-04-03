@@ -40,7 +40,11 @@ class Main extends Component {
           //move scroll
           if (_isTop) {
             let headElem = document.getElementsByClassName("navi");
-            headElem[0].scrollBy(_naviScrollX, 0);
+            let value =
+              _naviScrollX === 0 && kinds.indexOf(this.state.clickKind) > 4
+                ? 1000
+                : _naviScrollX;
+            headElem[0].scrollBy(value, 0);
           } else {
             window.scrollTo(0, _scrollY);
           }
