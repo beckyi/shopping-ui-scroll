@@ -149,7 +149,11 @@ class Main extends Component {
 
           copyChild.push(
             <CLi key={i + "li"}>
-              <Contents info={upObj} />
+              <Contents
+                page={upObj.page} /** obj error */
+                brand={upObj.brand}
+                info={upObj.info}
+              />
             </CLi>
           );
         }
