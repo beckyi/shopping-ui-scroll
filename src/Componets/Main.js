@@ -35,6 +35,9 @@ class Main extends Component {
         //불필요요소 삭제
         delete stateObj.scrollY;
         delete stateObj.naviScrollX;
+        let tempObj = Object.assign({}, stateObj.dummyData["0"]);
+        stateObj.dummyData.shift();
+        stateObj.dummyData.unshift(tempObj);
 
         await this.setState(stateObj, () => {
           //move scroll
@@ -75,8 +78,8 @@ class Main extends Component {
             return [];
           }
         });
-      console.log("dummyData", dummyData);
-      await this.setState({ showProgress: false }); //dummyData,
+
+      await this.setState({ dummyData, showProgress: false });
     }
 
     //화면 변경되기 전에 현재 상태 저장
