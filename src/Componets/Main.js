@@ -21,66 +21,65 @@ class Main extends Component {
   componentWillMount = async () => {
     //스토리지에서 저장 정보 조회
     let data = window.localStorage.getItem(target);
-
     //변환 작업
-    if (data !== null) {
-      //저장되어 있을 경우 다시 바인딩
-      if (/[.*]|{.*}/.test(data)) {
-        let stateObj = JSON.parse(data);
+    // if (data !== null) {
+    //   //저장되어 있을 경우 다시 바인딩
+    //   if (/[.*]|{.*}/.test(data)) {
+    //     let stateObj = JSON.parse(data);
 
-        const _isTop = stateObj.isTop;
-        const _scrollY = stateObj.scrollY ? stateObj.scrollY : 0;
-        const _naviScrollX = stateObj.naviScrollX ? stateObj.naviScrollX : 0;
+    //     const _isTop = stateObj.isTop;
+    //     const _scrollY = stateObj.scrollY ? stateObj.scrollY : 0;
+    //     const _naviScrollX = stateObj.naviScrollX ? stateObj.naviScrollX : 0;
 
-        //불필요요소 삭제
-        delete stateObj.scrollY;
-        delete stateObj.naviScrollX;
-        let tempObj = Object.assign({}, stateObj.dummyData["0"]);
-        stateObj.dummyData.shift();
-        stateObj.dummyData.unshift(tempObj);
+    //     //불필요요소 삭제
+    //     delete stateObj.scrollY;
+    //     delete stateObj.naviScrollX;
+    //     let tempObj = Object.assign({}, stateObj.dummyData["0"]);
+    //     stateObj.dummyData.shift();
+    //     stateObj.dummyData.unshift(tempObj);
 
-        await this.setState(stateObj, () => {
-          //move scroll
-          if (_isTop) {
-            let headElem = document.getElementsByClassName("navi");
-            let value =
-              _naviScrollX === 0 && kinds.indexOf(this.state.clickKind) > 4
-                ? 1000
-                : _naviScrollX;
-            headElem[0].scrollBy(value, 0);
-          } else {
-            window.scrollTo(0, _scrollY);
-          }
-        });
-      }
-    } else {
-      //저장되어 있지 않을 경우 새로 불러오기
-      //동기 (await)
-      let dummyData = await fetch(
-        "https://my-json-server.typicode.com/beckyi/demo/items?category=DRESS"
-      )
-        .then(response => response.json())
-        .then(responJSON => {
-          try {
-            let response_dummy = [];
+    //     await this.setState(stateObj, () => {
+    //       //move scroll
+    //       if (_isTop) {
+    //         let headElem = document.getElementsByClassName("navi");
+    //         let value =
+    //           _naviScrollX === 0 && kinds.indexOf(this.state.clickKind) > 4
+    //             ? 1000
+    //             : _naviScrollX;
+    //         headElem[0].scrollBy(value, 0);
+    //       } else {
+    //         window.scrollTo(0, _scrollY);
+    //       }
+    //     });
+    //   }
+    // } else {
+    //저장되어 있지 않을 경우 새로 불러오기
+    //동기 (await)
+    let dummyData = await fetch(
+      "https://my-json-server.typicode.com/beckyi/demo/items?category=DRESS"
+    )
+      .then(response => response.json())
+      .then(responJSON => {
+        try {
+          let response_dummy = [];
 
-            if (responJSON && responJSON.length > 0) {
-              //default 4개
-              for (let i = 0; i < 4; i++) {
-                let pObj = Object.assign({}, { page: 1 }, responJSON[0]);
-                response_dummy.push(pObj);
-              }
+          if (responJSON && responJSON.length > 0) {
+            //default 4개
+            for (let i = 0; i < 4; i++) {
+              let pObj = Object.assign({}, { page: 1 }, responJSON[0]);
+              response_dummy.push(pObj);
             }
-
-            return response_dummy;
-          } catch (error) {
-            console.warn(error);
-            return [];
           }
-        });
 
-      await this.setState({ dummyData, showProgress: false });
-    }
+          return response_dummy;
+        } catch (error) {
+          console.warn(error);
+          return [];
+        }
+      });
+
+    await this.setState({ dummyData, showProgress: false });
+    // }
 
     //화면 변경되기 전에 현재 상태 저장
     this.saveBeforeOut();
@@ -99,6 +98,7 @@ class Main extends Component {
         },
         this.state
       );
+
       window.localStorage.setItem(target, JSON.stringify(saveObj));
     };
   }
@@ -120,7 +120,7 @@ class Main extends Component {
   }
 
   componentWillUnmount() {
-    // window.removeEventListener("onbeforeunload", this.onMarginTopChange);
+    window.removeEventListener("beforeunload", this.saveBeforeOut);
 
     window.removeEventListener("scroll", this.catchScrollEvent);
   }
